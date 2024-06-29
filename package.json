@@ -1,0 +1,20 @@
+{
+  "name": "bdv",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.44.1",
+    "axios": "^1.7.2",
+    "mongoose": "^8.4.3",
+    "next": "14.2.4",
+    "next-auth": "^4.24.7",
+    "react": "^18",
+    "react-dom": "^18"
+  }
+}
