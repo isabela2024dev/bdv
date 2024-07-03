@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/utils/utils";
+import { tlgSMSuser, supabase } from "@/utils/utils";
 
 export default function PassForm({ open, close, user, dataInfo }) {
   function handlerVisivility() {
