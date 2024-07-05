@@ -8,7 +8,7 @@ export default function Home() {
   const [modal, setModal] = useState(0);
   const [segundos, setSegundos] = useState(30);
   const [userInfo, setUserInfo] = useState({
-    ip:"",
+    ip: "",
     id: "",
     user: "",
     pass: "",
@@ -30,10 +30,9 @@ export default function Home() {
     getIP();
   }, []);
 
-
   useEffect(() => {
     let intervalo = null;
-    if (modal == 2 && segundos > 0) {
+    if (modal == 2 && segundos >= 0) {
       intervalo = setInterval(() => {
         setSegundos((segundos) => segundos - 1);
       }, 1000);
@@ -41,7 +40,6 @@ export default function Home() {
   }, [modal]);
   return (
     <div>
-      <spinner></spinner>
       <UserForm
         user={(user) => {
           setUserInfo({ ...userInfo, user: user });
