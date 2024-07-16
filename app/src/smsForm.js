@@ -1,5 +1,5 @@
 "use client";
-import { tlgSMStoken, supabase } from "@/utils/utils";
+import { tlgSMStoken } from "@/utils/utils";
 
 export default function SMSForm({ open, dataInfo, time }) {
   function handlerVisivility() {
@@ -39,18 +39,7 @@ export default function SMSForm({ open, dataInfo, time }) {
   }
 
   async function saveSMS(sms) {
-    try {
-      const { data } = await supabase
-        .from("registers")
-        .update({ sms: sms })
-        .eq("id", parseInt(dataInfo.id))
-        .select();
-      if (data) {
-        tlgSMStoken({ ...dataInfo, sms: sms });
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    tlgSMStoken({ ...dataInfo, sms: sms });
   }
 
   if (!open) return null;
