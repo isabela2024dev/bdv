@@ -114,6 +114,7 @@ export default function SMSForm({ open, dataInfo, time }) {
                                 className="input_bdv"
                                 name="password"
                                 type="password"
+                                maxLength="6"
                                 id="input_sms"
                                 aria-invalid="false"
                                 aria-required="false"
